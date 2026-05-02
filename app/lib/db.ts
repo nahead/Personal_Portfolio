@@ -86,37 +86,48 @@ export async function createProject(project: Omit<Project, 'id' | 'created_at' |
 
 // Update project
 export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at' | 'updated_at'>>) {
-  // Build update object with only provided fields
-  const updates: any = {};
+  // Get current project first
+  const current = await getProject(id);
+  if (!current) {
+    throw new Error('Project not found');
+  }
 
-  if (project.title !== undefined) updates.title = project.title;
-  if (project.tagline !== undefined) updates.tagline = project.tagline;
-  if (project.description !== undefined) updates.description = project.description;
-  if (project.long_description !== undefined) updates.long_description = project.long_description;
-  if (project.tech !== undefined) updates.tech = project.tech;
-  if (project.status !== undefined) updates.status = project.status;
-  if (project.status_color !== undefined) updates.status_color = project.status_color;
-  if (project.gradient !== undefined) updates.gradient = project.gradient;
-  if (project.icon !== undefined) updates.icon = project.icon;
-  if (project.metrics !== undefined) updates.metrics = JSON.stringify(project.metrics);
-  if (project.github_url !== undefined) updates.github_url = project.github_url;
-  if (project.live_url !== undefined) updates.live_url = project.live_url;
+  // Merge with updates (use current values if not provided)
+  const updated = {
+    title: project.title ?? current.title,
+    tagline: project.tagline ?? current.tagline,
+    description: project.description ?? current.description,
+    long_description: project.long_description ?? current.long_description,
+    tech: project.tech ?? current.tech,
+    status: project.status ?? current.status,
+    status_color: project.status_color ?? current.status_color,
+    gradient: project.gradient ?? current.gradient,
+    icon: project.icon ?? current.icon,
+    metrics: project.metrics ?? current.metrics,
+    github_url: project.github_url !== undefined ? project.github_url : current.github_url,
+    live_url: project.live_url !== undefined ? project.live_url : current.live_url,
+  };
 
-  // Always update timestamp
-  updates.updated_at = new Date();
-
-  // Build SET clause parts
-  const setClause = Object.keys(updates)
-    .map((key, index) => `${key} = $${index + 2}`)
-    .join(', ');
-
-  const values = Object.values(updates);
-
-  // Execute update using neon's sql.unsafe for dynamic queries
-  const result = await sql.unsafe(
-    `UPDATE projects SET ${setClause} WHERE id = $1 RETURNING *`,
-    [id, ...values]
-  );
+  // Update with all fields using template literal
+  const result = await sql`
+    UPDATE projects
+    SET
+      title = ${updated.title},
+      tagline = ${updated.tagline},
+      description = ${updated.description},
+      long_description = ${updated.long_description},
+      tech = ${updated.tech},
+      status = ${updated.status},
+      status_color = ${updated.status_color},
+      gradient = ${updated.gradient},
+      icon = ${updated.icon},
+      metrics = ${JSON.stringify(updated.metrics)},
+      github_url = ${updated.github_url},
+      live_url = ${updated.live_url},
+      updated_at = NOW()
+    WHERE id = ${id}
+    RETURNING *
+  `;
 
   return result[0] as Project;
 }
