@@ -86,69 +86,38 @@ export async function createProject(project: Omit<Project, 'id' | 'created_at' |
 
 // Update project
 export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at' | 'updated_at'>>) {
-  const setClauses: string[] = [];
-  const values: any[] = [id];
-  let paramIndex = 2;
+  // Build update object with only provided fields
+  const updates: any = {};
 
-  if (project.title !== undefined) {
-    setClauses.push(`title = $${paramIndex++}`);
-    values.push(project.title);
-  }
-  if (project.tagline !== undefined) {
-    setClauses.push(`tagline = $${paramIndex++}`);
-    values.push(project.tagline);
-  }
-  if (project.description !== undefined) {
-    setClauses.push(`description = $${paramIndex++}`);
-    values.push(project.description);
-  }
-  if (project.long_description !== undefined) {
-    setClauses.push(`long_description = $${paramIndex++}`);
-    values.push(project.long_description);
-  }
-  if (project.tech !== undefined) {
-    setClauses.push(`tech = $${paramIndex++}`);
-    values.push(project.tech);
-  }
-  if (project.status !== undefined) {
-    setClauses.push(`status = $${paramIndex++}`);
-    values.push(project.status);
-  }
-  if (project.status_color !== undefined) {
-    setClauses.push(`status_color = $${paramIndex++}`);
-    values.push(project.status_color);
-  }
-  if (project.gradient !== undefined) {
-    setClauses.push(`gradient = $${paramIndex++}`);
-    values.push(project.gradient);
-  }
-  if (project.icon !== undefined) {
-    setClauses.push(`icon = $${paramIndex++}`);
-    values.push(project.icon);
-  }
-  if (project.metrics !== undefined) {
-    setClauses.push(`metrics = $${paramIndex++}`);
-    values.push(JSON.stringify(project.metrics));
-  }
-  if (project.github_url !== undefined) {
-    setClauses.push(`github_url = $${paramIndex++}`);
-    values.push(project.github_url);
-  }
-  if (project.live_url !== undefined) {
-    setClauses.push(`live_url = $${paramIndex++}`);
-    values.push(project.live_url);
-  }
+  if (project.title !== undefined) updates.title = project.title;
+  if (project.tagline !== undefined) updates.tagline = project.tagline;
+  if (project.description !== undefined) updates.description = project.description;
+  if (project.long_description !== undefined) updates.long_description = project.long_description;
+  if (project.tech !== undefined) updates.tech = project.tech;
+  if (project.status !== undefined) updates.status = project.status;
+  if (project.status_color !== undefined) updates.status_color = project.status_color;
+  if (project.gradient !== undefined) updates.gradient = project.gradient;
+  if (project.icon !== undefined) updates.icon = project.icon;
+  if (project.metrics !== undefined) updates.metrics = JSON.stringify(project.metrics);
+  if (project.github_url !== undefined) updates.github_url = project.github_url;
+  if (project.live_url !== undefined) updates.live_url = project.live_url;
 
-  setClauses.push('updated_at = NOW()');
+  // Always update timestamp
+  updates.updated_at = new Date();
 
-  const query = `
-    UPDATE projects
-    SET ${setClauses.join(', ')}
-    WHERE id = $1
-    RETURNING *
-  `;
+  // Build SET clause parts
+  const setClause = Object.keys(updates)
+    .map((key, index) => `${key} = $${index + 2}`)
+    .join(', ');
 
-  const result = await sql(query, values);
+  const values = Object.values(updates);
+
+  // Execute update using neon's sql.unsafe for dynamic queries
+  const result = await sql.unsafe(
+    `UPDATE projects SET ${setClause} WHERE id = $1 RETURNING *`,
+    [id, ...values]
+  );
+
   return result[0] as Project;
 }
 
