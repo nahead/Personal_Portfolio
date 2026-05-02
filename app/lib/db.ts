@@ -86,66 +86,69 @@ export async function createProject(project: Omit<Project, 'id' | 'created_at' |
 
 // Update project
 export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at' | 'updated_at'>>) {
-  const updates: string[] = [];
-  const values: any[] = [];
+  const setClauses: string[] = [];
+  const values: any[] = [id];
+  let paramIndex = 2;
 
-  if (project.title) {
-    updates.push('title = $' + (values.length + 1));
+  if (project.title !== undefined) {
+    setClauses.push(`title = $${paramIndex++}`);
     values.push(project.title);
   }
-  if (project.tagline) {
-    updates.push('tagline = $' + (values.length + 1));
+  if (project.tagline !== undefined) {
+    setClauses.push(`tagline = $${paramIndex++}`);
     values.push(project.tagline);
   }
-  if (project.description) {
-    updates.push('description = $' + (values.length + 1));
+  if (project.description !== undefined) {
+    setClauses.push(`description = $${paramIndex++}`);
     values.push(project.description);
   }
-  if (project.long_description) {
-    updates.push('long_description = $' + (values.length + 1));
+  if (project.long_description !== undefined) {
+    setClauses.push(`long_description = $${paramIndex++}`);
     values.push(project.long_description);
   }
-  if (project.tech) {
-    updates.push('tech = $' + (values.length + 1));
+  if (project.tech !== undefined) {
+    setClauses.push(`tech = $${paramIndex++}`);
     values.push(project.tech);
   }
-  if (project.status) {
-    updates.push('status = $' + (values.length + 1));
+  if (project.status !== undefined) {
+    setClauses.push(`status = $${paramIndex++}`);
     values.push(project.status);
   }
-  if (project.status_color) {
-    updates.push('status_color = $' + (values.length + 1));
+  if (project.status_color !== undefined) {
+    setClauses.push(`status_color = $${paramIndex++}`);
     values.push(project.status_color);
   }
-  if (project.gradient) {
-    updates.push('gradient = $' + (values.length + 1));
+  if (project.gradient !== undefined) {
+    setClauses.push(`gradient = $${paramIndex++}`);
     values.push(project.gradient);
   }
-  if (project.icon) {
-    updates.push('icon = $' + (values.length + 1));
+  if (project.icon !== undefined) {
+    setClauses.push(`icon = $${paramIndex++}`);
     values.push(project.icon);
   }
-  if (project.metrics) {
-    updates.push('metrics = $' + (values.length + 1));
+  if (project.metrics !== undefined) {
+    setClauses.push(`metrics = $${paramIndex++}`);
     values.push(JSON.stringify(project.metrics));
   }
   if (project.github_url !== undefined) {
-    updates.push('github_url = $' + (values.length + 1));
+    setClauses.push(`github_url = $${paramIndex++}`);
     values.push(project.github_url);
   }
   if (project.live_url !== undefined) {
-    updates.push('live_url = $' + (values.length + 1));
+    setClauses.push(`live_url = $${paramIndex++}`);
     values.push(project.live_url);
   }
 
-  updates.push('updated_at = NOW()');
+  setClauses.push('updated_at = NOW()');
 
-  const result = await sql`
+  const query = `
     UPDATE projects
-    SET ${sql(updates.join(', '))}
-    WHERE id = ${id}
+    SET ${setClauses.join(', ')}
+    WHERE id = $1
     RETURNING *
   `;
+
+  const result = await sql(query, values);
   return result[0] as Project;
 }
 
