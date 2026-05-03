@@ -602,7 +602,7 @@ export default function NAIChat() {
                   </div>
 
                   {/* Quick Reply Chips */}
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2 px-0.5 sm:px-1">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 px-0.5 sm:px-1 max-w-full">
                     {(quickReplies.length > 0 ? quickReplies : [
                       'What can Nahead build?',
                       'Is he available for hire?',
@@ -614,7 +614,7 @@ export default function NAIChat() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4 + index * 0.1 }}
                         onClick={() => handleQuickReply(text)}
-                        className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full text-[#F1F5F9] transition-all duration-200 hover:text-white hover:bg-[#3B82F6]/15 hover:border-[#3B82F6]/50 hover:shadow-[0_4px_12px_rgba(59,130,246,0.2)]"
+                        className="px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-sm rounded-full text-[#F1F5F9] transition-all duration-200 hover:text-white hover:bg-[#3B82F6]/15 hover:border-[#3B82F6]/50 hover:shadow-[0_4px_12px_rgba(59,130,246,0.2)] whitespace-nowrap max-w-full overflow-hidden text-ellipsis"
                         style={{
                           backgroundColor: 'rgba(11, 17, 32, 0.6)',
                           border: '1px solid rgba(59, 130, 246, 0.2)',
