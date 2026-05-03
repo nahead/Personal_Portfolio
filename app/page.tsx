@@ -16,6 +16,9 @@ import About from './components/sections/About';
 import Skills from './components/sections/Skills';
 import Education from './components/sections/Education';
 import Projects from './components/sections/Projects';
+import GitHubStats from './components/sections/GitHubStats';
+import Testimonials from './components/sections/Testimonials';
+import Resume from './components/sections/Resume';
 import Contact from './components/sections/Contact';
 
 const WorldCanvas = dynamic(
@@ -168,6 +171,15 @@ export default function Home() {
       </div>
       <div id="projects">
         <Projects />
+      </div>
+      <div id="github">
+        <GitHubStats />
+      </div>
+      <div id="testimonials">
+        <Testimonials />
+      </div>
+      <div id="resume">
+        <Resume />
       </div>
       <div id="contact">
         <Contact />

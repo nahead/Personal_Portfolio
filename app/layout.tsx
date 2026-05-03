@@ -29,41 +29,62 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Nahead Jokhio — AI & Full Stack Developer',
+  metadataBase: new URL('https://naheadjokhio.vercel.app'),
+  title: {
+    default: 'Nahead Jokhio — AI Developer | Python | Next.js | FastAPI',
+    template: '%s | Nahead Jokhio',
+  },
   description:
-    '18-year-old AI developer from Karachi, Pakistan. Python, Next.js, FastAPI, MCP & OpenAI Agents specialist.',
+    '18-year-old AI developer from Karachi building intelligent systems with Python, TypeScript, Next.js, FastAPI, MCP & OpenAI Agents SDK. Specialized in AI chatbots and full-stack development.',
   keywords: [
     'Nahead Jokhio',
-    'AI Developer',
-    'Full Stack Developer',
-    'Python',
-    'TypeScript',
-    'Next.js',
-    'FastAPI',
-    'MCP',
-    'OpenAI Agents',
+    'AI Developer Karachi',
+    'Python Developer Pakistan',
+    'Next.js Developer',
+    'FastAPI Developer',
+    'MCP Integration',
+    'OpenAI Agents SDK',
     'Gemini API',
-    'Karachi',
-    'Pakistan',
+    'Full Stack Developer',
+    'TypeScript Developer',
+    'AI Chatbot Developer',
+    'Machine Learning Engineer',
+    'Karachi Developer',
+    'Pakistan Tech',
+    'GIAIC Graduate',
   ],
-  authors: [{ name: 'Nahead Jokhio' }],
+  authors: [{ name: 'Nahead Jokhio', url: 'https://naheadjokhio.vercel.app' }],
   creator: 'Nahead Jokhio',
   publisher: 'Nahead Jokhio',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://naheadjokhio.com',
-    title: 'Nahead Jokhio — AI & Full Stack Developer',
+    url: 'https://naheadjokhio.vercel.app',
+    title: 'Nahead Jokhio — AI Developer | Python | Next.js | FastAPI',
     description:
-      '18-year-old AI developer from Karachi, Pakistan. Python, Next.js, FastAPI, MCP & OpenAI Agents specialist.',
+      '18-year-old AI developer from Karachi building intelligent systems with Python, TypeScript, Next.js, FastAPI, MCP & OpenAI Agents SDK.',
     siteName: 'Nahead Jokhio Portfolio',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Nahead Jokhio - AI Developer Portfolio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nahead Jokhio — AI & Full Stack Developer',
+    title: 'Nahead Jokhio — AI Developer | Python | Next.js | FastAPI',
     description:
-      '18-year-old AI developer from Karachi, Pakistan. Python, Next.js, FastAPI, MCP & OpenAI Agents specialist.',
+      '18-year-old AI developer from Karachi building intelligent systems with Python, TypeScript, Next.js, FastAPI, MCP & OpenAI Agents SDK.',
     creator: '@naheadjokhio',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
@@ -76,8 +97,8 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
+  alternates: {
+    canonical: 'https://naheadjokhio.vercel.app',
   },
 };
 
@@ -92,6 +113,45 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#0B1120" />
         <link rel="icon" href="/favicon.ico" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: 'Nahead Jokhio',
+              url: 'https://naheadjokhio.vercel.app',
+              image: 'https://naheadjokhio.vercel.app/og-image.png',
+              jobTitle: 'AI Developer',
+              description: '18-year-old AI developer from Karachi building intelligent systems with Python, TypeScript, Next.js, FastAPI, MCP & OpenAI Agents SDK',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Karachi',
+                addressCountry: 'Pakistan',
+              },
+              alumniOf: {
+                '@type': 'Organization',
+                name: 'GIAIC - Governor Initiative for Artificial Intelligence',
+              },
+              knowsAbout: [
+                'Artificial Intelligence',
+                'Python Programming',
+                'TypeScript',
+                'Next.js',
+                'FastAPI',
+                'Model Context Protocol',
+                'OpenAI Agents SDK',
+                'Full Stack Development',
+                'AI Chatbots',
+              ],
+              sameAs: [
+                'https://github.com/nahead',
+                'https://linkedin.com/in/nahead',
+                'https://twitter.com/naheadjokhio',
+              ],
+            }),
+          }}
+        />
       </head>
       <body>
         <LanguageProvider>

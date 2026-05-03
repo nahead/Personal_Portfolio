@@ -5,7 +5,11 @@
       "Bash(npm run *)",
       "Bash(taskkill *)",
       "Bash(npx tsc *)",
-      "Bash(git init *)"
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Fix: Rewrite updateProject to use Neon template literal syntax *)",
+      "Bash(git push *)",
+      "Bash(git commit *)"
     ]
   }
 }
