@@ -62,14 +62,14 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-xs sm:text-sm md:text-base text-[#94A3B8] tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-4 sm:mb-6"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-[#94A3B8] tracking-[0.3em] sm:tracking-[0.4em] uppercase mb-6 sm:mb-8 font-medium"
           >
             Hello, World. I&apos;m
           </motion.p>
 
           {/* Name with Individual Letter Animation */}
-          <div className="mb-8">
-            <h1 className="text-[clamp(2rem,8vw,8rem)] font-bold leading-none px-4">
+          <div className="mb-10 sm:mb-12">
+            <h1 className="text-[clamp(2.5rem,10vw,10rem)] font-black leading-none px-4" style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif", letterSpacing: '-0.02em' }}>
               {nameLetters.map((letter, index) => (
                 <motion.span
                   key={index}
@@ -82,7 +82,7 @@ export default function Hero() {
                   }}
                   className="inline-block bg-gradient-to-br from-[#F1F5F9] via-[#94A3B8] to-[#3B82F6] bg-clip-text text-transparent"
                   style={{
-                    textShadow: '0 0 40px rgba(59, 130, 246, 0.3)',
+                    textShadow: '0 0 60px rgba(59, 130, 246, 0.4)',
                   }}
                 >
                   {letter === ' ' ? ' ' : letter}
@@ -96,9 +96,10 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.5 }}
-            className="text-lg sm:text-xl md:text-3xl lg:text-4xl mb-6 sm:mb-8 h-12 sm:h-14 md:h-16 flex items-center justify-center px-4"
+            className="text-xl sm:text-2xl md:text-4xl lg:text-5xl mb-8 sm:mb-10 h-14 sm:h-16 md:h-20 flex items-center justify-center px-4"
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            <span className="text-[#94A3B8] mr-2 sm:mr-3">I build</span>
+            <span className="text-[#94A3B8] mr-3 sm:mr-4 font-medium">I build</span>
             <TypeAnimation
               sequence={[
                 'AI Agents',
@@ -126,7 +127,8 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.8 }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-[#94A3B8] max-w-[90%] sm:max-w-[500px] mx-auto mb-8 sm:mb-10 md:mb-12 px-4"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#94A3B8] max-w-[90%] sm:max-w-[600px] mx-auto mb-10 sm:mb-12 md:mb-14 px-4 font-medium leading-relaxed"
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Building the future with AI — from Karachi to the world
           </motion.p>
