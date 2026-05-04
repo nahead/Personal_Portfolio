@@ -148,21 +148,6 @@ export default function GitHubStats() {
             View Full Profile
           </motion.a>
         </motion.div>
-
-        {/* Contribution Graph Placeholder */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 max-w-4xl mx-auto"
-        >
-          <img
-            src="https://github-readme-stats.vercel.app/api?username=nahead&show_icons=true&theme=tokyonight&hide_border=true&bg_color=1A2333&title_color=3B82F6&icon_color=3B82F6&text_color=94A3B8"
-            alt="GitHub Stats"
-            className="w-full rounded-xl border border-[#1E3A5F]"
-          />
-        </motion.div>
       </div>
     </section>
   );
