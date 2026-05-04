@@ -17,6 +17,7 @@ import Skills from './components/sections/Skills';
 import Education from './components/sections/Education';
 import Projects from './components/sections/Projects';
 import GitHubStats from './components/sections/GitHubStats';
+import MetricsDashboard from './components/sections/MetricsDashboard';
 import Testimonials from './components/sections/Testimonials';
 import Resume from './components/sections/Resume';
 import Contact from './components/sections/Contact';
@@ -174,6 +175,9 @@ export default function Home() {
       </div>
       <div id="github">
         <GitHubStats />
+      </div>
+      <div id="metrics">
+        <MetricsDashboard />
       </div>
       <div id="testimonials">
         <Testimonials />

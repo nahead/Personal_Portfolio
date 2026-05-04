@@ -5,6 +5,9 @@ import LenisProvider from './components/LenisProvider';
 import CustomCursor from './components/effects/CustomCursor';
 import LoadingScreen from './components/effects/LoadingScreen';
 import SecretTerminal from './components/effects/SecretTerminal';
+import KonamiAnimation from './components/effects/KonamiAnimation';
+import HiddenTerminal from './components/effects/HiddenTerminal';
+import LogoClickCounter from './components/effects/LogoClickCounter';
 import { LanguageProvider } from './contexts/LanguageContext';
 
 const syne = Syne({
@@ -158,6 +161,9 @@ export default function RootLayout({
           <LenisProvider>
             <CustomCursor />
             <SecretTerminal />
+            <KonamiAnimation />
+            <HiddenTerminal />
+            <LogoClickCounter />
             {children}
           </LenisProvider>
         </LanguageProvider>
