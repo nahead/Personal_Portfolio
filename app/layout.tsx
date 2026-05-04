@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     siteName: 'Nahead Jokhio Portfolio',
     images: [
       {
-        url: '/og-image.png?v=2',
+        url: '/og-image-v2.png',
         width: 1200,
         height: 630,
         alt: 'Nahead Jokhio - AI Developer Portfolio',
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     description:
       '18-year-old AI developer from Karachi building intelligent systems with Python, TypeScript, Next.js, FastAPI, MCP & OpenAI Agents SDK.',
     creator: '@naheadjokhio',
-    images: ['/og-image.png?v=2'],
+    images: ['/og-image-v2.png'],
   },
   robots: {
     index: true,
