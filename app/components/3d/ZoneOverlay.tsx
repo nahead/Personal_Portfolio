@@ -24,12 +24,18 @@ const zoneData = [
   },
   {
     id: 3,
+    title: 'PROJECTS',
+    subtitle: 'Featured Work',
+    description: 'NAI Chatbot • 3D Portfolio • AI Applications',
+  },
+  {
+    id: 4,
     title: 'EDUCATION',
     subtitle: 'Learning Journey',
     description: 'Matriculation → Intermediate → GIAIC IT Course',
   },
   {
-    id: 4,
+    id: 5,
     title: 'CONTACT',
     subtitle: 'Get In Touch',
     description: 'Open for opportunities and collaborations',

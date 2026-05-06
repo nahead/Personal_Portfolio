@@ -11,6 +11,7 @@ import { CameraRig } from './CameraRig';
 import { HeroZone } from './zones/HeroZone';
 import { AboutZone } from './zones/AboutZone';
 import { SkillsZone } from './zones/SkillsZone';
+import { ProjectsZone } from './zones/ProjectsZone';
 import { EducationZone } from './zones/EducationZone';
 import { ContactZone } from './zones/ContactZone';
 
@@ -72,6 +73,7 @@ export function WorldCanvas() {
         <HeroZone />
         <AboutZone />
         <SkillsZone />
+        <ProjectsZone />
         <EducationZone />
         <ContactZone />
 

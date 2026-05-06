@@ -40,8 +40,9 @@ export function ZoneContent() {
       <AnimatePresence mode="wait">
         {currentZone === 1 && <AboutContent key="about" language={aboutLanguage} setLanguage={setAboutLanguage} />}
         {currentZone === 2 && <SkillsContent key="skills" />}
-        {currentZone === 3 && <EducationContent key="education" />}
-        {currentZone === 4 && <ContactContent key="contact" />}
+        {currentZone === 3 && <ProjectsContent key="projects" />}
+        {currentZone === 4 && <EducationContent key="education" />}
+        {currentZone === 5 && <ContactContent key="contact" />}
       </AnimatePresence>
     </div>
   );
@@ -166,6 +167,95 @@ function SkillsContent() {
               </div>
             </motion.div>
           ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// Projects Zone Content - Fully Responsive
+function ProjectsContent() {
+  const projects = [
+    {
+      title: 'NAI Chatbot',
+      description: 'AI-powered portfolio assistant',
+      tech: 'OpenAI SDK • FastAPI • Gemini',
+      status: 'Live',
+      color: '#3B82F6',
+      icon: '🤖',
+    },
+    {
+      title: '3D Portfolio',
+      description: 'Interactive Three.js experience',
+      tech: 'React Three Fiber • Next.js',
+      status: 'Live',
+      color: '#10B981',
+      icon: '🌐',
+    },
+    {
+      title: 'AI Applications',
+      description: 'MCP & Agent-based systems',
+      tech: 'Python • TypeScript • AI/ML',
+      status: 'Active',
+      color: '#8B5CF6',
+      icon: '⚡',
+    },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.6 }}
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: '5rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+      }}
+    >
+      <div style={{ width: 'min(900px, 90vw)' }}>
+        <div className="bg-[#1A2333]/90 backdrop-blur-md border border-[#3B82F6]/30 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-2xl">
+          <h2 className="text-xl md:text-2xl font-bold text-[#F1F5F9] mb-4 md:mb-5 text-center">Featured Projects</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <div className="bg-[#0B1120]/50 rounded-lg md:rounded-xl p-4 md:p-5 border border-[#3B82F6]/20 hover:border-[#3B82F6]/50 transition-all">
+                  <div className="text-4xl md:text-5xl mb-3 text-center">{project.icon}</div>
+                  <h3 className="text-base md:text-lg font-bold text-[#F1F5F9] mb-1 text-center">{project.title}</h3>
+                  <p className="text-[#94A3B8] text-xs md:text-sm mb-2 md:mb-3 text-center">{project.description}</p>
+                  <p className="text-[#3B82F6] text-[10px] md:text-xs mb-2 md:mb-3 text-center">{project.tech}</p>
+                  <div className="flex justify-center">
+                    <span
+                      className="inline-block px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-semibold"
+                      style={{
+                        backgroundColor: `${project.color}20`,
+                        color: project.color
+                      }}
+                    >
+                      {project.status}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-4 md:mt-5 text-center">
+            <p className="text-[#94A3B8] text-xs md:text-sm">
+              Scroll down to explore more projects in detail
+            </p>
+          </div>
         </div>
       </div>
     </motion.div>
