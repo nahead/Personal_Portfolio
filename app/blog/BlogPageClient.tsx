@@ -62,15 +62,12 @@ export default function BlogPageClient({ posts }: { posts: BlogPost[] }) {
                 <Link href={`/blog/${post.slug}`}>
                   <div className="bg-[#1A2333] border border-[#1E3A5F] rounded-2xl overflow-hidden hover:border-[#3B82F6] transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] h-full flex flex-col">
                     {/* Cover Image */}
-                    {post.coverImage && (
-                      <div className="h-48 bg-gradient-to-br from-[#3B82F6] to-[#1E3A5F] relative overflow-hidden">
-                        <img
-                          src={post.coverImage}
-                          alt={post.title}
-                          className="w-full h-full object-cover"
-                        />
+                    <div className="h-48 bg-gradient-to-br from-[#3B82F6] to-[#1E3A5F] relative overflow-hidden">
+                      <div className="absolute inset-0 bg-[#0B1120]/50 group-hover:bg-[#0B1120]/30 transition-colors" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-6xl">📝</span>
                       </div>
-                    )}
+                    </div>
 
                     {/* Content */}
                     <div className="p-6 flex-1 flex flex-col">

@@ -106,21 +106,16 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
           </div>
         </motion.header>
 
-        {/* Cover Image */}
-        {post.coverImage && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-12 rounded-2xl overflow-hidden border border-[#1E3A5F]"
-          >
-            <img
-              src={post.coverImage}
-              alt={post.title}
-              className="w-full h-auto"
-            />
-          </motion.div>
-        )}
+        {/* Cover Image Placeholder */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-12 rounded-2xl overflow-hidden border border-[#1E3A5F] bg-gradient-to-br from-[#3B82F6] to-[#1E3A5F] h-64 flex items-center justify-center relative"
+        >
+          <div className="absolute inset-0 bg-[#0B1120]/50" />
+          <span className="text-8xl relative z-10">📝</span>
+        </motion.div>
 
         {/* Content */}
         <motion.div
