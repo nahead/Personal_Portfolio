@@ -21,6 +21,7 @@ import MetricsDashboard from './components/sections/MetricsDashboard';
 import Testimonials from './components/sections/Testimonials';
 import Resume from './components/sections/Resume';
 import Contact from './components/sections/Contact';
+import Footer from './components/sections/Footer';
 
 const WorldCanvas = dynamic(
   () => import('./world/WorldCanvas').then((m) => ({ default: m.WorldCanvas })),
@@ -188,6 +189,7 @@ export default function Home() {
       <div id="contact">
         <Contact />
       </div>
+      <Footer />
     </main>
   );
 }

@@ -6,8 +6,10 @@ const FOOTER_LINKS = {
   navigation: [
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
-    { name: 'Education', href: '#education' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Resume', href: '/resume' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Case Studies', href: '/case-studies' },
     { name: 'Contact', href: '#contact' },
   ],
   social: [
