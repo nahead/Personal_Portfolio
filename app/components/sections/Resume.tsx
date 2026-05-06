@@ -4,14 +4,8 @@ import { motion } from 'framer-motion';
 import { Download, FileText, Briefcase, GraduationCap, Code } from 'lucide-react';
 
 export default function Resume() {
-  const handleDownload = () => {
-    // Create a link element and trigger download
-    const link = document.createElement('a');
-    link.href = '/resume.pdf'; // PDF should be in public folder
-    link.download = 'Nahead_Jokhio_Resume.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleViewResume = () => {
+    window.open('/resume', '_blank');
   };
 
   const highlights = [
@@ -91,7 +85,7 @@ export default function Resume() {
               ))}
             </div>
 
-            {/* Download Button */}
+            {/* View Resume Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -100,16 +94,16 @@ export default function Resume() {
               className="text-center"
             >
               <motion.button
-                onClick={handleDownload}
+                onClick={handleViewResume}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center gap-3 px-8 py-4 bg-[#3B82F6] text-white rounded-lg font-semibold text-base sm:text-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-shadow"
               >
-                <Download className="w-5 h-5" />
-                Download Resume (PDF)
+                <FileText className="w-5 h-5" />
+                View Full Resume
               </motion.button>
               <p className="text-[#94A3B8] text-xs sm:text-sm mt-4">
-                Last updated: May 2026 • 2 pages
+                Last updated: May 2026 • Downloadable PDF available
               </p>
             </motion.div>
           </motion.div>
