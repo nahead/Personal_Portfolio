@@ -307,13 +307,154 @@ export default function ResumeClient() {
             border-radius: 0 !important;
           }
           @page {
-            margin: 0.5in;
+            margin: 0.35in 0.4in;
             size: letter;
           }
           * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+          }
+
+          /* Aggressive font size reduction */
+          h1 {
+            font-size: 26px !important;
+            margin-bottom: 2px !important;
+          }
+          h2 {
+            font-size: 12px !important;
+            margin-bottom: 6px !important;
+            padding-bottom: 3px !important;
+          }
+          h3 {
+            font-size: 12px !important;
+            margin-bottom: 3px !important;
+          }
+          p, li, span, div {
+            font-size: 10px !important;
+            line-height: 1.3 !important;
+          }
+
+          /* Aggressive spacing reduction */
+          section {
+            margin-bottom: 8px !important;
+            page-break-inside: avoid;
+          }
+          .px-10 {
+            padding-left: 0.5in !important;
+            padding-right: 0.5in !important;
+          }
+          .py-10 {
+            padding-top: 0.35in !important;
+            padding-bottom: 0.35in !important;
+          }
+          .py-8 {
+            padding-top: 0.2in !important;
+            padding-bottom: 0.2in !important;
+          }
+          .py-4 {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+          }
+          .space-y-8 > * + * {
+            margin-top: 8px !important;
+          }
+          .space-y-6 > * + * {
+            margin-top: 6px !important;
+          }
+          .space-y-4 > * + * {
+            margin-top: 5px !important;
+          }
+          .space-y-3 > * + * {
+            margin-top: 4px !important;
+          }
+          .space-y-2 > * + * {
+            margin-top: 3px !important;
+          }
+          .space-y-1 > * + * {
+            margin-top: 2px !important;
+          }
+          .p-5 {
+            padding: 8px !important;
+          }
+          .p-4 {
+            padding: 7px !important;
+          }
+          .p-3 {
+            padding: 6px !important;
+          }
+          .mb-1 {
+            margin-bottom: 2px !important;
+          }
+          .mb-2 {
+            margin-bottom: 4px !important;
+          }
+          .mb-3 {
+            margin-bottom: 5px !important;
+          }
+          .mb-4 {
+            margin-bottom: 6px !important;
+          }
+          .mb-5 {
+            margin-bottom: 8px !important;
+          }
+          .mt-3 {
+            margin-top: 5px !important;
+          }
+          .gap-2 {
+            gap: 3px !important;
+          }
+          .gap-3 {
+            gap: 4px !important;
+          }
+
+          /* Make tech badges tiny */
+          .rounded-full {
+            font-size: 8px !important;
+            padding: 1px 6px !important;
+            display: inline-block !important;
+          }
+
+          /* Compact grid */
+          .grid {
+            gap: 6px !important;
+          }
+
+          /* Prevent orphans */
+          .bg-blue-50 {
+            page-break-inside: avoid;
+          }
+          ul {
+            page-break-inside: avoid;
+            margin-top: 3px !important;
+            margin-bottom: 3px !important;
+          }
+          li {
+            margin-bottom: 2px !important;
+          }
+
+          /* Compact header contact info */
+          .text-sm {
+            font-size: 9px !important;
+          }
+          .text-lg {
+            font-size: 14px !important;
+          }
+
+          /* Reduce border widths */
+          .border-l-4 {
+            border-left-width: 3px !important;
+          }
+          .border-b-2 {
+            border-bottom-width: 1px !important;
+          }
+
+          /* Make rounded corners smaller */
+          .rounded-lg {
+            border-radius: 4px !important;
+          }
+          .rounded-xl {
+            border-radius: 6px !important;
           }
         }
       `}</style>
