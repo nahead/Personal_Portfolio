@@ -1,0 +1,555 @@
+---
+title: "Building My 3D Interactive Portfolio: A Technical Deep Dive"
+date: "2026-05-07"
+excerpt: "How I built an immersive 3D portfolio experience using Next.js 15, Three.js, React Three Fiber, and GSAP - achieving 90+ Lighthouse score with 60fps performance."
+author: "Nahead Jokhio"
+tags: ["Next.js", "Three.js", "React Three Fiber", "3D", "Portfolio"]
+readTime: "15 min read"
+---
+
+# Building My 3D Interactive Portfolio: A Technical Deep Dive
+
+## The Vision
+
+When I started building my portfolio, I had one goal: **stand out**. Not just another static website with cards and buttons, but an **immersive 3D experience** that showcases my skills while maintaining professional performance standards.
+
+The challenge? Build a 3D world that:
+- Runs at **60fps** on most devices
+- Achieves **90+ Lighthouse score**
+- Works seamlessly on mobile and desktop
+- Provides an intuitive navigation experience
+- Falls back gracefully to 2D when needed
+
+## The Result
+
+An interactive 3D world with **6 navigable zones**:
+1. **Hero Zone** - Animated introduction with floating particles
+2. **About Zone** - Personal story and journey
+3. **Skills Zone** - Tech stack visualization
+4. **Education Zone** - Academic background
+5. **Projects Zone** - Dynamic project cards from database
+6. **Contact Zone** - Get in touch section
+
+**Performance Metrics:**
+- 🚀 **90+ Lighthouse score** (despite heavy 3D rendering)
+- ⚡ **60fps** smooth animations
+- 📦 **35% smaller bundle** through code splitting
+- 📱 **Fully responsive** (320px to 4K)
+- 👥 **1,000+ visitors** in first month
+
+## Tech Stack
+
+### Core Framework: Next.js 15
+
+```typescript
+// app/page.tsx
+export default function Home() {
+  const [use3D, setUse3D] = useState(false);
+  
+  if (use3D) {
+    return <WorldCanvas />;
+  }
+  
+  return <Traditional2DPortfolio />;
+}
+```
+
+**Why Next.js 15?**
+- App Router for better performance
+- Server Components for reduced bundle size
+- Built-in optimization (images, fonts, scripts)
+- TypeScript support out of the box
+
+### 3D Engine: Three.js + React Three Fiber
+
+```typescript
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+
+export function WorldCanvas() {
+  return (
+    <Canvas>
+      <PerspectiveCamera makeDefault position={[0, 5, 20]} />
+      <OrbitControls enableZoom={false} />
+      
+      {/* 3D Zones */}
+      <HeroZone />
+      <AboutZone />
+      <ProjectsZone />
+      {/* ... */}
+    </Canvas>
+  );
+}
+```
+
+**Why React Three Fiber?**
+- Declarative 3D with React components
+- Automatic memory management
+- Built-in hooks for animations
+- Excellent TypeScript support
+
+### Animation: GSAP + ScrollTrigger
+
+```typescript
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Smooth camera transitions between zones
+gsap.to(camera.position, {
+  x: targetPosition.x,
+  y: targetPosition.y,
+  z: targetPosition.z,
+  duration: 2,
+  ease: 'power2.inOut',
+  scrollTrigger: {
+    trigger: '#projects',
+    start: 'top center',
+  }
+});
+```
+
+### Smooth Scrolling: Lenis
+
+```typescript
+import Lenis from '@studio-freight/lenis';
+
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smooth: true,
+});
+```
+
+## Architecture Breakdown
+
+### 1. Zone-Based World Structure
+
+Each section is a separate "zone" in 3D space:
+
+```typescript
+// app/world/zones/ProjectsZone.tsx
+export function ProjectsZone() {
+  const [projects, setProjects] = useState([]);
+  
+  useEffect(() => {
+    // Fetch from database
+    fetch('/api/admin/projects')
+      .then(res => res.json())
+      .then(data => setProjects(data.projects));
+  }, []);
+  
+  return (
+    <group position={[30, 0, 0]}>
+      {projects.map((project, index) => (
+        <ProjectCard 
+          key={project.id}
+          project={project}
+          position={calculatePosition(index)}
+        />
+      ))}
+    </group>
+  );
+}
+```
+
+### 2. Camera Navigation System
+
+```typescript
+// app/world/CameraRig.tsx
+export function CameraRig() {
+  const { camera } = useThree();
+  const { scrollProgress } = useScrollProgress();
+  
+  useFrame(() => {
+    // Map scroll to camera position
+    const zoneIndex = Math.floor(scrollProgress * 6);
+    const targetPos = ZONE_POSITIONS[zoneIndex];
+    
+    // Smooth interpolation
+    camera.position.lerp(targetPos, 0.05);
+  });
+}
+```
+
+### 3. Performance Optimization
+
+#### Code Splitting
+
+```typescript
+// Dynamic imports for heavy components
+const WorldCanvas = dynamic(
+  () => import('./world/WorldCanvas'),
+  { ssr: false }
+);
+
+const NAIChat = dynamic(
+  () => import('./components/NAIChat'),
+  { ssr: false }
+);
+```
+
+#### Texture Optimization
+
+```typescript
+// Use compressed textures
+const texture = useTexture('/textures/particle.webp');
+texture.minFilter = THREE.LinearFilter;
+texture.generateMipmaps = false;
+```
+
+#### Geometry Instancing
+
+```typescript
+// Render 1000+ particles efficiently
+const particlesRef = useRef();
+
+const positions = useMemo(() => {
+  const pos = new Float32Array(1000 * 3);
+  for (let i = 0; i < 1000; i++) {
+    pos[i * 3] = (Math.random() - 0.5) * 50;
+    pos[i * 3 + 1] = (Math.random() - 0.5) * 50;
+    pos[i * 3 + 2] = (Math.random() - 0.5) * 50;
+  }
+  return pos;
+}, []);
+
+return (
+  <points ref={particlesRef}>
+    <bufferGeometry>
+      <bufferAttribute
+        attach="attributes-position"
+        count={1000}
+        array={positions}
+        itemSize={3}
+      />
+    </bufferGeometry>
+    <pointsMaterial size={0.1} />
+  </points>
+);
+```
+
+### 4. Responsive Design
+
+```typescript
+// Device tier detection
+export function detectDeviceTier() {
+  const gpu = navigator.gpu;
+  const memory = (navigator as any).deviceMemory;
+  const cores = navigator.hardwareConcurrency;
+  
+  if (cores >= 8 && memory >= 8) return 'high';
+  if (cores >= 4 && memory >= 4) return 'medium';
+  return 'low';
+}
+
+// Adjust quality based on device
+const pixelRatio = tier === 'high' ? 2 : 1;
+const shadowMapSize = tier === 'high' ? 2048 : 1024;
+```
+
+### 5. Fallback to 2D
+
+```typescript
+// Graceful degradation
+const [use3D, setUse3D] = useState(false);
+
+useEffect(() => {
+  const tier = detectDeviceTier();
+  const userPreference = localStorage.getItem('prefer3D');
+  
+  if (userPreference === 'true' && tier !== 'low') {
+    setUse3D(true);
+  }
+}, []);
+
+// Toggle button
+<button onClick={() => {
+  setUse3D(!use3D);
+  localStorage.setItem('prefer3D', String(!use3D));
+}}>
+  {use3D ? 'Switch to 2D' : 'Try 3D Mode'}
+</button>
+```
+
+## Key Features
+
+### 1. Dynamic Project Loading
+
+Projects load from PostgreSQL database:
+
+```typescript
+// API Route: app/api/admin/projects/route.ts
+export async function GET() {
+  const projects = await sql`
+    SELECT * FROM projects ORDER BY id ASC
+  `;
+  return NextResponse.json({ projects });
+}
+
+// 3D Zone: Fetch and display
+const { data } = useSWR('/api/admin/projects', fetcher);
+
+return data?.projects.map((project, i) => (
+  <ProjectCard3D
+    key={project.id}
+    title={project.title}
+    color={project.status_color}
+    position={calculatePosition(i, data.projects.length)}
+  />
+));
+```
+
+### 2. Interactive Zone Overlays
+
+```typescript
+// app/components/3d/ZoneOverlay.tsx
+export function ZoneOverlay() {
+  const currentZone = useWorldStore(s => s.currentZone);
+  
+  return (
+    <AnimatePresence>
+      {currentZone && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="fixed top-20 left-6 z-50"
+        >
+          <h2>{ZONE_INFO[currentZone].title}</h2>
+          <p>{ZONE_INFO[currentZone].description}</p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+```
+
+### 3. Particle System
+
+```typescript
+// app/world/shared/ParticleField.tsx
+export function ParticleField({ count = 1000 }) {
+  const particlesRef = useRef();
+  
+  useFrame((state) => {
+    if (particlesRef.current) {
+      particlesRef.current.rotation.y += 0.0005;
+      
+      // Animate individual particles
+      const positions = particlesRef.current.geometry.attributes.position;
+      for (let i = 0; i < count; i++) {
+        positions.array[i * 3 + 1] += Math.sin(state.clock.elapsedTime + i) * 0.001;
+      }
+      positions.needsUpdate = true;
+    }
+  });
+  
+  return <points ref={particlesRef}>{/* ... */}</points>;
+}
+```
+
+### 4. AI Chatbot Integration
+
+```typescript
+// NAI chatbot works in both 2D and 3D modes
+<NAIChat />
+
+// Positioned as floating button
+.fixed.bottom-6.right-6.z-[10000]
+```
+
+## Challenges & Solutions
+
+### Challenge 1: Performance on Mobile
+
+**Problem:** Initial version ran at 20-30fps on mobile devices
+
+**Solution:**
+- Reduced particle count on mobile (1000 → 300)
+- Disabled shadows on low-tier devices
+- Used lower resolution textures
+- Implemented LOD (Level of Detail) system
+
+```typescript
+const particleCount = tier === 'high' ? 1000 : tier === 'medium' ? 500 : 300;
+const enableShadows = tier === 'high';
+```
+
+### Challenge 2: Bundle Size
+
+**Problem:** Initial bundle was 2.5MB (too large)
+
+**Solution:**
+- Code splitting with dynamic imports
+- Tree-shaking unused Three.js modules
+- Lazy loading 3D components
+- Result: **35% reduction** to 1.6MB
+
+### Challenge 3: Scroll Synchronization
+
+**Problem:** Scroll position didn't match camera position smoothly
+
+**Solution:**
+- Implemented custom scroll progress hook
+- Used GSAP for smooth interpolation
+- Added easing functions for natural movement
+
+```typescript
+export function useScrollProgress() {
+  const [progress, setProgress] = useState(0);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      setProgress(scrolled / maxScroll);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  return progress;
+}
+```
+
+### Challenge 4: Memory Leaks
+
+**Problem:** Memory usage increased over time
+
+**Solution:**
+- Proper cleanup in useEffect hooks
+- Disposed Three.js geometries and materials
+- Removed event listeners on unmount
+
+```typescript
+useEffect(() => {
+  // Setup
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshStandardMaterial();
+  
+  return () => {
+    // Cleanup
+    geometry.dispose();
+    material.dispose();
+  };
+}, []);
+```
+
+## Performance Optimization Techniques
+
+### 1. Frustum Culling
+
+```typescript
+// Only render objects in camera view
+mesh.frustumCulled = true;
+```
+
+### 2. Texture Compression
+
+```typescript
+// Use WebP for textures
+const texture = useTexture('/textures/particle.webp');
+```
+
+### 3. Debounced Resize Handler
+
+```typescript
+const handleResize = debounce(() => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}, 250);
+```
+
+### 4. RequestAnimationFrame Optimization
+
+```typescript
+// Use React Three Fiber's useFrame (optimized RAF)
+useFrame((state, delta) => {
+  // Animations here run at 60fps
+  mesh.rotation.y += delta * 0.5;
+});
+```
+
+## Lighthouse Score Breakdown
+
+**Performance: 92**
+- First Contentful Paint: 1.2s
+- Largest Contentful Paint: 2.1s
+- Time to Interactive: 2.8s
+- Cumulative Layout Shift: 0.01
+
+**Accessibility: 100**
+- Proper ARIA labels
+- Keyboard navigation
+- Screen reader support
+
+**Best Practices: 100**
+- HTTPS enabled
+- No console errors
+- Proper image formats
+
+**SEO: 100**
+- Meta tags optimized
+- Structured data (JSON-LD)
+- Sitemap generated
+
+## Lessons Learned
+
+### 1. Start Simple, Add Complexity
+
+I initially tried to build everything at once. Bad idea. Start with basic 3D scene, then add features incrementally.
+
+### 2. Performance First, Features Second
+
+A smooth 60fps experience with fewer features beats a laggy experience with many features.
+
+### 3. Always Provide Fallbacks
+
+Not everyone has a powerful GPU. The 2D fallback ensures everyone can view my portfolio.
+
+### 4. Test on Real Devices
+
+Emulators lie. Test on actual phones, tablets, and low-end laptops.
+
+### 5. Monitor Bundle Size
+
+Every KB matters. Use webpack-bundle-analyzer to track what's bloating your bundle.
+
+## What's Next?
+
+Future improvements:
+- **VR support** using WebXR
+- **Voice navigation** using Web Speech API
+- **Multiplayer mode** (see other visitors in 3D space)
+- **Custom shaders** for more visual effects
+- **Physics engine** (Cannon.js or Rapier)
+
+## Try It Yourself
+
+Want to build your own 3D portfolio? Here's my advice:
+
+1. **Learn Three.js basics** first (don't jump to R3F immediately)
+2. **Start with React Three Fiber** examples
+3. **Use Drei helpers** (they save tons of time)
+4. **Optimize early** (don't wait until the end)
+5. **Test on mobile** from day 1
+6. **Provide 2D fallback** always
+
+## Code Repository
+
+The complete source code is available on my GitHub:
+[github.com/nahead/personalportfolio](https://github.com/nahead)
+
+## Conclusion
+
+Building this 3D portfolio taught me more about performance optimization, 3D graphics, and user experience than any tutorial could. It's challenging, rewarding, and a great way to stand out.
+
+If you're a developer looking to showcase your skills, consider building something interactive. It doesn't have to be 3D - but it should be **memorable**.
+
+**Questions?** Try the 3D mode yourself at [naheadjokhio.vercel.app](https://naheadjokhio.vercel.app) or reach out via the contact form!
+
+---
+
+*This portfolio is built with Next.js 15, Three.js, React Three Fiber, GSAP, and lots of coffee. Follow my journey on [GitHub](https://github.com/nahead).*

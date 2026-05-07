@@ -168,7 +168,11 @@ export default function AdminDashboard() {
 
   const handleEdit = (project: Project) => {
     setEditingProject(project);
-    setFormData(project);
+    setFormData({
+      ...project,
+      github_url: project.github_url || '',
+      live_url: project.live_url || '',
+    });
     setShowForm(true);
   };
 
@@ -579,7 +583,7 @@ export default function AdminDashboard() {
                       </label>
                       <input
                         type="url"
-                        value={formData.github_url}
+                        value={formData.github_url || ''}
                         onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
                         className="w-full px-4 py-3 bg-[#0B1120] border border-[#1E3A5F] rounded-xl text-[#F1F5F9] focus:outline-none focus:border-[#3B82F6]"
                       />
@@ -591,7 +595,7 @@ export default function AdminDashboard() {
                       </label>
                       <input
                         type="url"
-                        value={formData.live_url}
+                        value={formData.live_url || ''}
                         onChange={(e) => setFormData({ ...formData, live_url: e.target.value })}
                         className="w-full px-4 py-3 bg-[#0B1120] border border-[#1E3A5F] rounded-xl text-[#F1F5F9] focus:outline-none focus:border-[#3B82F6]"
                       />

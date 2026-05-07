@@ -1,10 +1,18 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
+interface Project {
+  id: number;
+  title: string;
+  status_color: string;
+  icon: string;
+}
+
 interface ProjectCard {
+  id: number;
   name: string;
   position: THREE.Vector3;
   color: string;
@@ -14,33 +22,51 @@ interface ProjectCard {
 export function ProjectsZone() {
   const cardsRef = useRef<Array<THREE.Mesh | null>>([]);
   const elapsedTime = useRef(0);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Project cards in 3D space
-  const projectCards = useMemo<ProjectCard[]>(() => {
-    const spacing = 6;
-    const baseX = 30; // Position in world space
+  // Fetch projects from database
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const response = await fetch('/api/admin/projects');
+        const data = await response.json();
+        if (response.ok) {
+          setProjects(data.projects);
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-    return [
-      {
-        name: 'NAI Chatbot',
-        position: new THREE.Vector3(baseX - spacing, 2, 0),
-        color: '#3B82F6',
-        icon: '🤖',
-      },
-      {
-        name: 'Portfolio 3D',
-        position: new THREE.Vector3(baseX, 0, 0),
-        color: '#10B981',
-        icon: '🌐',
-      },
-      {
-        name: 'AI Projects',
-        position: new THREE.Vector3(baseX + spacing, -2, 0),
-        color: '#8B5CF6',
-        icon: '⚡',
-      },
-    ];
+    fetchProjects();
   }, []);
+
+  // Generate project cards dynamically from database
+  const projectCards = useMemo<ProjectCard[]>(() => {
+    if (projects.length === 0) return [];
+
+    const baseX = 30; // Position in world space
+    const totalProjects = projects.length;
+
+    // Calculate spacing based on number of projects
+    const spacing = totalProjects <= 3 ? 6 : 5;
+    const startY = ((totalProjects - 1) * spacing) / 2;
+
+    return projects.map((project, index) => ({
+      id: project.id,
+      name: project.title,
+      position: new THREE.Vector3(
+        baseX,
+        startY - (index * spacing),
+        0
+      ),
+      color: project.status_color || '#3B82F6',
+      icon: project.icon || '🚀',
+    }));
+  }, [projects]);
 
   useFrame((state, delta) => {
     elapsedTime.current += delta;
@@ -48,7 +74,7 @@ export function ProjectsZone() {
 
     // Animate each project card
     cardsRef.current.forEach((ref, index) => {
-      if (ref) {
+      if (ref && projectCards[index]) {
         // Floating animation
         ref.position.y = projectCards[index].position.y + Math.sin(time * 1.5 + index) * 0.3;
 
@@ -62,11 +88,27 @@ export function ProjectsZone() {
     });
   });
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <group position={[30, 0, 0]}>
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[0.5, 16, 16]} />
+          <meshStandardMaterial
+            color="#3B82F6"
+            emissive="#3B82F6"
+            emissiveIntensity={0.8}
+          />
+        </mesh>
+      </group>
+    );
+  }
+
   return (
     <group position={[30, 0, 0]}>
       {/* Project Cards */}
       {projectCards.map((card, index) => (
-        <group key={`project-${index}`}>
+        <group key={`project-${card.id}`}>
           {/* Card Base */}
           <mesh
             ref={(el) => {
