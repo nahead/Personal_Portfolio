@@ -43,7 +43,7 @@ export default function ResumeClient() {
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 text-white px-10 py-10">
             <h1 className="text-4xl font-bold mb-2">
-              Nahead Jokhio
+              Naheed Khan
             </h1>
             <p className="text-lg text-blue-100 font-medium mb-5">
               AI Developer • Full-Stack Engineer
@@ -61,7 +61,7 @@ export default function ResumeClient() {
               </span>
               <a href="https://naheadjokhio.vercel.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white">
                 <ExternalLink className="w-4 h-4" />
-                naheadjokhio.vercel.app
+                naheed.vercel.app
               </a>
               <a href="https://github.com/nahead" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white">
                 <ExternalLink className="w-4 h-4" />
